@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import 'lenis/dist/lenis.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -121,31 +120,12 @@
   * {
     @apply border-border outline-ring/50;
   }
-
-  html {
-    scroll-behavior: smooth;
-    overflow-x: clip;
-    width: 100%;
-    scroll-padding-top: 5.5rem;
-  }
-
-  html.lenis {
-    height: auto;
-  }
-
-  html.lenis.lenis-smooth {
-    scroll-behavior: auto !important;
-  }
-
-  html.lenis body {
-    height: auto;
-  }
-
   body {
     @apply bg-background text-foreground;
-    overflow-x: clip;
-    width: 100%;
-    min-width: 0;
+  }
+  
+  html {
+    scroll-behavior: smooth;
   }
 }
 

@@ -3,21 +3,45 @@
 import { useEffect, type ReactNode } from "react";
 import Lenis from "lenis";
 import { getEngagedScrollBlend, getScrollEngageFactor } from "@/lib/scroll-engage";
-import { prefersReducedMotion } from "@/lib/scroll-performance";
+import { isCoarsePointer, prefersReducedMotion } from "@/lib/scroll-performance";
 
-const SCROLL = {
-  lerp: 0.055,
-  wheelMultiplier: 0.48,
-  touchMultiplier: 0.72,
-  syncTouchLerp: 0.07,
-  maxWheelDelta: 65,
-  engageMaxWheelDelta: 18,
-  engageWheelRatio: 0.38,
-  anchorOffset: -88,
-  anchorDuration: 2.4,
-  keyboardStep: 0.3,
-  engageKeyboardStep: 0.12,
-};
+function getScrollConfig() {
+  const mobile = isCoarsePointer();
+
+  if (mobile) {
+    return {
+      lerp: 0.1,
+      wheelMultiplier: 0.7,
+      touchMultiplier: 1.15,
+      syncTouch: false,
+      syncTouchLerp: 0.12,
+      maxWheelDelta: 85,
+      engageMaxWheelDelta: 48,
+      engageWheelRatio: 0.78,
+      engageMinBlend: 0.55,
+      anchorOffset: -72,
+      anchorDuration: 1.6,
+      keyboardStep: 0.38,
+      engageKeyboardStep: 0.22,
+    };
+  }
+
+  return {
+    lerp: 0.072,
+    wheelMultiplier: 0.58,
+    touchMultiplier: 0.88,
+    syncTouch: true,
+    syncTouchLerp: 0.09,
+    maxWheelDelta: 72,
+    engageMaxWheelDelta: 38,
+    engageWheelRatio: 0.62,
+    engageMinBlend: 0.34,
+    anchorOffset: -88,
+    anchorDuration: 2,
+    keyboardStep: 0.34,
+    engageKeyboardStep: 0.16,
+  };
+}
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
@@ -58,6 +82,8 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
     const html = document.documentElement;
     html.classList.add("lenis", "lenis-smooth");
 
+    const SCROLL = getScrollConfig();
+
     let engageFactor = 0;
 
     const lenis = new Lenis({
@@ -65,7 +91,7 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
       wheelMultiplier: SCROLL.wheelMultiplier,
       touchMultiplier: SCROLL.touchMultiplier,
       smoothWheel: true,
-      syncTouch: true,
+      syncTouch: SCROLL.syncTouch,
       syncTouchLerp: SCROLL.syncTouchLerp,
       autoRaf: true,
       anchors: {
@@ -76,7 +102,7 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
       prevent: shouldPreventLenis,
       virtualScroll: (data) => {
         engageFactor = getScrollEngageFactor();
-        const blend = getEngagedScrollBlend(engageFactor);
+        const blend = getEngagedScrollBlend(engageFactor, SCROLL.engageMinBlend);
 
         data.deltaY *= blend * lerp(1, SCROLL.engageWheelRatio, engageFactor);
 
@@ -95,6 +121,7 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
         "--scroll-engage",
         engageFactor.toFixed(3)
       );
+      window.dispatchEvent(new Event("app:scroll"));
     });
 
     const syncLenisState = () => {

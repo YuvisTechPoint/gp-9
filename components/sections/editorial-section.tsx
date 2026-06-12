@@ -50,7 +50,7 @@ export function EditorialSection() {
         ref={engageZoneRef}
         id="in-motion"
         data-scroll-engage
-        className="relative h-[180vh] w-full"
+        className="relative h-[125vh] w-full md:h-[165vh]"
         aria-label="GP-9 lid opening video"
       >
         <div className="sticky top-0 h-svh w-full overflow-hidden">

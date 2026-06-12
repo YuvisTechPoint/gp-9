@@ -6,10 +6,12 @@ let listening = false;
 
 function onScroll() {
   if (rafId !== null) return;
-  rafId = requestAnimationFrame(() => {
-    rafId = null;
-    callbacks.forEach((callback) => callback());
-  });
+  rafId = requestAnimationFrame(fireScrollCallbacks);
+}
+
+function fireScrollCallbacks() {
+  rafId = null;
+  callbacks.forEach((callback) => callback());
 }
 
 export function subscribeScroll(callback: ScrollCallback): () => void {
@@ -18,6 +20,7 @@ export function subscribeScroll(callback: ScrollCallback): () => void {
   if (!listening && typeof window !== "undefined") {
     listening = true;
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("app:scroll", onScroll, { passive: true });
   }
 
   return () => {
@@ -25,6 +28,7 @@ export function subscribeScroll(callback: ScrollCallback): () => void {
     if (callbacks.size === 0 && listening && typeof window !== "undefined") {
       listening = false;
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("app:scroll", onScroll);
       if (rafId !== null) {
         cancelAnimationFrame(rafId);
         rafId = null;
