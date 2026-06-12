@@ -154,7 +154,7 @@ export function HeroSection() {
                 className="absolute inset-0 flex items-end overflow-hidden pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-0"
                 style={{ opacity: textOpacity }}
               >
-                <h1 className="w-full px-4 pb-4 text-[clamp(2.25rem,11vw,8rem)] font-medium leading-[0.85] tracking-tighter text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] sm:px-6 sm:pb-6">
+                <h1 className="w-full bg-gradient-to-br from-zinc-400 via-white to-zinc-200 bg-clip-text px-4 pb-4 text-[clamp(2.25rem,11vw,8rem)] font-medium leading-[0.85] tracking-tighter text-transparent [filter:drop-shadow(0_2px_18px_rgba(0,0,0,0.45))] sm:px-6 sm:pb-6">
                   {word.split("").map((letter, index) => (
                     <span
                       key={index}
