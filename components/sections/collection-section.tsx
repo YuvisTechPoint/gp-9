@@ -53,7 +53,7 @@ const highlights = [
 
 export function CollectionSection() {
   return (
-    <section id="details" className="relative overflow-hidden bg-background">
+    <section id="accessories" className="relative overflow-hidden bg-background">
       <SectionHeading
         label="Details"
         title="Crafted inside and out."

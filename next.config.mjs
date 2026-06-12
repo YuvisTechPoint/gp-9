@@ -7,21 +7,12 @@ const nextConfig = {
     unoptimized: true,
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "static.roland.com",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'static.roland.com',
+        pathname: '/**',
       },
     ],
   },
-  transpilePackages: ["three"],
-  async rewrites() {
-    return [
-      {
-        source: "/roland-static/:path*",
-        destination: "https://static.roland.com/:path*",
-      },
-    ];
-  },
-};
+}
 
-export default nextConfig;
+export default nextConfig

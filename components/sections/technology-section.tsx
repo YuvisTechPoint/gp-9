@@ -124,7 +124,7 @@ export function TechnologySection() {
   const gap = imageProgress * 16;
 
   return (
-    <section id="technology" ref={sectionRef} className="relative bg-foreground">
+    <section ref={sectionRef} className="relative bg-foreground">
       <div className="sticky top-0 h-screen overflow-hidden">
         <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,rgba(0,0,0,0.35)_100%)]" />
 

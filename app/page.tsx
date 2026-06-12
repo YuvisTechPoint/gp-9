@@ -5,12 +5,10 @@ import { PhilosophySection } from "@/components/sections/philosophy-section";
 import { FeaturedProductsSection } from "@/components/sections/featured-products-section";
 import { TechnologySection } from "@/components/sections/technology-section";
 import { SpeakersSection } from "@/components/sections/speakers-section";
-import { ExperienceSection } from "@/components/sections/experience-section";
 import { GallerySection } from "@/components/sections/gallery-section";
 import { CollectionSection } from "@/components/sections/collection-section";
 import { EditorialSection } from "@/components/sections/editorial-section";
 import { LineupSection } from "@/components/sections/lineup-section";
-import { Gp9mSection } from "@/components/sections/gp9m-section";
 import { SpecsSection } from "@/components/sections/specs-section";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
 import { CtaSection } from "@/components/sections/cta-section";
@@ -51,12 +49,10 @@ export default function Home() {
       <FeaturedProductsSection />
       <TechnologySection />
       <SpeakersSection />
-      <ExperienceSection />
       <GallerySection />
       <CollectionSection />
       <EditorialSection />
       <LineupSection />
-      <Gp9mSection />
       <SpecsSection />
       <TestimonialsSection />
       <CtaSection />

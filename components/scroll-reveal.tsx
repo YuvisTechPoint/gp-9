@@ -1,47 +1,27 @@
 "use client";
 
-import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type RevealVariant = "up" | "left" | "right" | "scale" | "blur";
-
-interface ScrollRevealProps {
+type ScrollRevealProps = {
   children: ReactNode;
   className?: string;
-  variant?: RevealVariant;
   delay?: number;
-  threshold?: number;
-  as?: ElementType;
-}
-
-const variantClasses: Record<RevealVariant, string> = {
-  up: "scroll-reveal-up",
-  left: "scroll-reveal-left",
-  right: "scroll-reveal-right",
-  scale: "scroll-reveal-scale",
-  blur: "scroll-reveal-blur",
+  variant?: "up" | "scale" | "blur";
 };
 
 export function ScrollReveal({
   children,
   className,
-  variant = "up",
   delay = 0,
-  threshold = 0.15,
-  as: Component = "div",
+  variant = "up",
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
-      setVisible(true);
-      return;
-    }
+    const node = ref.current;
+    if (!node) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -50,21 +30,27 @@ export function ScrollReveal({
           observer.disconnect();
         }
       },
-      { threshold, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.15 }
     );
 
-    observer.observe(el);
+    observer.observe(node);
     return () => observer.disconnect();
-  }, [threshold]);
+  }, []);
 
   return (
-    <Component
+    <div
       ref={ref}
-      data-visible={visible ? "true" : "false"}
-      className={cn(variantClasses[variant], className)}
+      className={cn(
+        "transition-all duration-700 ease-out",
+        !visible && variant === "up" && "translate-y-8 opacity-0",
+        !visible && variant === "scale" && "scale-95 opacity-0",
+        !visible && variant === "blur" && "opacity-0 blur-sm",
+        visible && "translate-y-0 scale-100 opacity-100 blur-0",
+        className
+      )}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
-    </Component>
+    </div>
   );
 }

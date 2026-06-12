@@ -32,27 +32,3 @@ export function galleryImage(finish: FinishKey, name: string) {
   const prefix = FINISHES[finish].galleryPrefix;
   return `${ROLAND_GALLERY}/${prefix}_${name}`;
 }
-
-/** Frames for drag-to-rotate 360° product spinner (ebony finish) */
-export const SPINNER_FRAMES = [
-  `${ROLAND_GALLERY}/gp-9_front_gal.jpg`,
-  `${ROLAND_GALLERY}/gp-9_angle_side_gal.jpg`,
-  `${ROLAND_GALLERY}/gp-9_angle_open_gal.jpg`,
-  `${ROLAND_GALLERY}/gp-9_top_angle_gal.jpg`,
-  `${ROLAND_GALLERY}/gp-9_back_angle_gal.jpg`,
-  `${ROLAND_GALLERY}/gp-9_angle_closed_gal.jpg`,
-  `${ROLAND_GALLERY}/gp-9_casters_gal.jpg`,
-  `${ROLAND_GALLERY}/gp-9_speakers_gal.jpg`,
-] as const;
-
-export const SPINNER_FRAME_LABELS = [
-  "Front",
-  "Side",
-  "Lid open",
-  "Top",
-  "Rear",
-  "Closed",
-  "Casters",
-  "Speakers",
-] as const;
-

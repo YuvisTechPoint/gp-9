@@ -43,7 +43,7 @@ export function EditorialSection() {
       </div>
 
       <ScrollReveal variant="scale">
-        <div className="relative aspect-[16/9] w-full overflow-hidden md:aspect-[21/9]">
+        <div className="relative aspect-[16/9] w-full overflow-hidden grain-overlay md:aspect-[21/9]">
           <LazyVideo
             src={GP9_VIDEOS.openLid}
             poster={`${ROLAND_GP9}/gp-9_hero.jpg`}

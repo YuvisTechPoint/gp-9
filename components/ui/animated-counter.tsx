@@ -2,33 +2,27 @@
 
 import { useEffect, useRef, useState } from "react";
 
-interface AnimatedCounterProps {
+type AnimatedCounterProps = {
   value: number;
   suffix?: string;
-  duration?: number;
-}
+};
 
-export function AnimatedCounter({ value, suffix = "", duration = 1200 }: AnimatedCounterProps) {
-  const [display, setDisplay] = useState(0);
+export function AnimatedCounter({ value, suffix = "" }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const startedRef = useRef(false);
+  const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
-      setDisplay(value);
-      return;
-    }
+    const node = ref.current;
+    if (!node) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting || startedRef.current) return;
-        startedRef.current = true;
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
 
         const start = performance.now();
+        const duration = 1200;
+
         const tick = (now: number) => {
           const progress = Math.min(1, (now - start) / duration);
           setDisplay(Math.round(value * progress));
@@ -36,14 +30,13 @@ export function AnimatedCounter({ value, suffix = "", duration = 1200 }: Animate
         };
 
         requestAnimationFrame(tick);
-        observer.disconnect();
       },
-      { threshold: 0.35 }
+      { threshold: 0.4 }
     );
 
-    observer.observe(el);
+    observer.observe(node);
     return () => observer.disconnect();
-  }, [value, duration]);
+  }, [value]);
 
   return (
     <span ref={ref}>

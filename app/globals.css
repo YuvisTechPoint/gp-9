@@ -77,7 +77,7 @@
 @theme inline {
   --font-sans: 'Inter', 'Inter Fallback', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --font-display: 'PP Editorial New', 'Times New Roman', serif;
+  --font-display: var(--font-cormorant), 'Cormorant Garamond', 'Times New Roman', serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -268,22 +268,21 @@
   animation: fadeIn 0.7s ease-out forwards;
 }
 
-/* Scroll reveal — GPU-friendly transforms only */
+/* Scroll reveal */
 .scroll-reveal-up,
 .scroll-reveal-left,
 .scroll-reveal-right,
 .scroll-reveal-scale,
 .scroll-reveal-blur {
   opacity: 0;
-  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
-  will-change: opacity, transform;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out, filter 0.8s ease-out;
 }
 
-.scroll-reveal-up { transform: translate3d(0, 40px, 0); }
-.scroll-reveal-left { transform: translate3d(-40px, 0, 0); }
-.scroll-reveal-right { transform: translate3d(40px, 0, 0); }
-.scroll-reveal-scale { transform: scale(0.96); }
-.scroll-reveal-blur { filter: blur(8px); transform: translate3d(0, 20px, 0); }
+.scroll-reveal-up { transform: translateY(48px); }
+.scroll-reveal-left { transform: translateX(-48px); }
+.scroll-reveal-right { transform: translateX(48px); }
+.scroll-reveal-scale { transform: scale(0.94); }
+.scroll-reveal-blur { transform: translateY(24px); filter: blur(8px); }
 
 [data-visible="true"].scroll-reveal-up,
 [data-visible="true"].scroll-reveal-left,
@@ -291,50 +290,103 @@
 [data-visible="true"].scroll-reveal-scale,
 [data-visible="true"].scroll-reveal-blur {
   opacity: 1;
-  transform: none;
-  filter: none;
-  will-change: auto;
+  transform: translate(0) scale(1);
+  filter: blur(0);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 @keyframes marquee-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
-.marquee-track {
-  animation: marquee-scroll 36s linear infinite;
+.nav-link-underline { position: relative; }
+
+.nav-link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
 }
 
-.marquee-track-slow {
-  animation-duration: 52s;
-}
-
-.card-shine {
-  position: relative;
-  overflow: hidden;
+.nav-link-underline:hover::after,
+.nav-link-underline[data-active="true"]::after {
+  transform: translateX(-50%) scaleX(1);
 }
 
 .card-shine::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.12) 50%, transparent 60%);
-  transform: translateX(-120%);
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
+  transform: translateX(-100%);
   transition: transform 0.6s ease;
   pointer-events: none;
 }
 
 .card-shine:hover::after {
-  transform: translateX(120%);
+  transform: translateX(100%);
+}
+
+.card-border-reveal { position: relative; }
+
+.card-border-reveal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid var(--foreground);
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.card-border-reveal:hover::before {
+  opacity: 0.3;
+  transform: scale(1);
+}
+
+.tilt-card { transform-style: preserve-3d; }
+
+.image-vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.45) 100%);
+  pointer-events: none;
+}
+
+.footer-link-hover {
+  display: inline-block;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.footer-link-hover:hover {
+  transform: translateX(4px);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track,
-  .marquee-track-slow,
-  .animate-float {
+  html { scroll-behavior: auto; }
+  .animate-float,
+  .grain-overlay::before {
     animation: none !important;
   }
-
   .scroll-reveal-up,
   .scroll-reveal-left,
   .scroll-reveal-right,

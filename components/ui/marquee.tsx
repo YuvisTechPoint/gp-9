@@ -1,34 +1,23 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-
-interface MarqueeProps {
+type MarqueeProps = {
   items: string[];
-  speed?: "slow" | "normal";
-  className?: string;
-}
+  speed?: "slow" | "normal" | "fast";
+};
 
-export function Marquee({ items, speed = "normal", className }: MarqueeProps) {
-  const track = [...items, ...items];
+export function Marquee({ items, speed = "normal" }: MarqueeProps) {
+  const duration =
+    speed === "slow" ? "40s" : speed === "fast" ? "18s" : "28s";
+  const loop = [...items, ...items];
 
   return (
-    <div
-      className={cn("overflow-hidden border-y border-border bg-background py-4", className)}
-      aria-hidden
-    >
+    <div className="overflow-hidden border-y border-border bg-background py-4">
       <div
-        className={cn(
-          "marquee-track flex w-max gap-10 whitespace-nowrap px-6",
-          speed === "slow" && "marquee-track-slow"
-        )}
+        className="flex w-max gap-10 whitespace-nowrap text-sm uppercase tracking-[0.2em] text-muted-foreground"
+        style={{ animation: `marquee-scroll ${duration} linear infinite` }}
       >
-        {track.map((item, index) => (
-          <span
-            key={`${item}-${index}`}
-            className="text-xs font-medium uppercase tracking-[0.35em] text-muted-foreground"
-          >
-            {item}
-          </span>
+        {loop.map((item, index) => (
+          <span key={`${item}-${index}`}>{item}</span>
         ))}
       </div>
     </div>

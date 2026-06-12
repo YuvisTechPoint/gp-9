@@ -40,8 +40,7 @@ export function GallerySection() {
   useEffect(() => {
     const calculateHeight = () => {
       if (!containerRef.current) return;
-      const containerWidth = containerRef.current.scrollWidth;
-      const totalHeight = window.innerHeight + (containerWidth - window.innerWidth);
+      const totalHeight = window.innerHeight + (containerRef.current.scrollWidth - window.innerWidth);
       setSectionHeight(`${totalHeight}px`);
     };
     const timer = setTimeout(calculateHeight, 100);
@@ -56,8 +55,7 @@ export function GallerySection() {
     if (!galleryRef.current || !containerRef.current) return;
     const rect = galleryRef.current.getBoundingClientRect();
     const totalScrollDistance = containerRef.current.scrollWidth - window.innerWidth;
-    const scrolled = Math.max(0, -rect.top);
-    const progress = totalScrollDistance > 0 ? Math.min(1, scrolled / totalScrollDistance) : 0;
+    const progress = totalScrollDistance > 0 ? Math.min(1, Math.max(0, -rect.top) / totalScrollDistance) : 0;
     setScrollProgress(progress);
     setTranslateX(progress * -totalScrollDistance);
   }, []);
@@ -95,7 +93,9 @@ export function GallerySection() {
               onClick={() => setActiveFinish(key)}
               className={cn(
                 "cursor-target rounded-full border px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.25em] transition-all",
-                activeFinish === key ? "border-foreground bg-foreground text-background" : "border-border text-muted-foreground hover:border-foreground"
+                activeFinish === key
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border text-muted-foreground hover:border-foreground"
               )}
               data-cursor-target
             >
@@ -153,7 +153,7 @@ export function GallerySection() {
       <Dialog open={lightboxIndex !== null} onOpenChange={(open) => !open && setLightboxIndex(null)}>
         <DialogContent className="max-w-5xl border-none bg-black/95 p-2 sm:p-4">
           <DialogTitle className="sr-only">
-            {lightboxIndex !== null ? images[lightboxIndex]?.caption : "Gallery image"}
+            {lightboxIndex !== null ? images[lightboxIndex]?.caption : "Gallery"}
           </DialogTitle>
           {lightboxIndex !== null && (
             <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">

@@ -39,7 +39,7 @@ export function PhilosophySection() {
     };
   }, [updateTransforms]);
 
-  const finishes: { key: FinishKey; translateX: number }[] = [
+  const cards: { key: FinishKey; translateX: number }[] = [
     { key: "ebony", translateX: ebonyTranslateX },
     { key: "white", translateX: whiteTranslateX },
   ];
@@ -73,24 +73,30 @@ export function PhilosophySection() {
       </div>
 
       <div ref={sectionRef} className="relative" style={{ height: "200vh" }}>
-        <div className="sticky top-0 flex h-screen items-center justify-center">
+        <div className="sticky top-0 flex h-screen items-center justify-center grain-overlay">
           <div className="relative w-full">
-            <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center" style={{ opacity: titleOpacity }}>
+            <div
+              className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center"
+              style={{ opacity: titleOpacity }}
+            >
               <h2 className="px-6 text-center font-display text-[11vw] font-medium leading-[0.95] tracking-tighter text-foreground/10 md:text-[9vw] lg:text-[7vw]">
                 Ebony &amp; White
               </h2>
             </div>
 
             <div className="relative z-10 grid grid-cols-1 gap-4 px-6 md:grid-cols-2 md:px-12 lg:px-20">
-              {finishes.map(({ key, translateX }) => (
+              {cards.map(({ key, translateX }) => (
                 <TiltCard key={key}>
                   <div
                     className={cn(
                       "group relative aspect-[4/3] overflow-hidden rounded-2xl card-shine card-border-reveal cursor-target transition-all duration-500",
-                      activeFinish === key ? "ring-2 ring-foreground/20" : "opacity-80 md:opacity-100"
+                      activeFinish === key ? "ring-2 ring-foreground/20" : "md:opacity-100 opacity-80"
                     )}
                     data-cursor-target
-                    style={{ transform: `translate3d(${translateX}%, 0, 0)` }}
+                    style={{
+                      transform: `translate3d(${translateX}%, 0, 0)`,
+                      WebkitTransform: `translate3d(${translateX}%, 0, 0)`,
+                    }}
                   >
                     <Image
                       src={FINISHES[key].picker}
@@ -104,7 +110,9 @@ export function PhilosophySection() {
                         <p className="text-xs uppercase tracking-[0.3em] text-white/60">Finish</p>
                         <p className="mt-1 text-xl font-medium text-white">{FINISHES[key].label}</p>
                       </div>
-                      <span className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-medium text-white backdrop-blur-md">GP-9</span>
+                      <span className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-medium text-white backdrop-blur-md">
+                        GP-9
+                      </span>
                     </div>
                   </div>
                 </TiltCard>
@@ -114,7 +122,7 @@ export function PhilosophySection() {
         </div>
       </div>
 
-      <div className="px-6 py-20 md:px-12 md:py-28 lg:px-20 lg:pb-14">
+      <div className="px-6 py-20 md:px-12 md:py-28 lg:px-20 lg:py-36 lg:pb-14">
         <ScrollReveal variant="scale">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Grand design language</p>
