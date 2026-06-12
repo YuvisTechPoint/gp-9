@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { LazyVideo } from "@/components/ui/lazy-video";
+import { GP9_VIDEOS, ROLAND_GP9 } from "@/lib/gp9-assets";
 
 const word = "Grand Piano";
-
-const ROLAND_GP9 = "https://static.roland.com/products/gp-9/images";
 
 const sideImages = [
   {
@@ -37,6 +37,17 @@ const sideImages = [
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isCompact, setIsCompact] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsCompact(window.innerWidth < 768);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,30 +73,32 @@ export function HeroSection() {
   const textOpacity = Math.max(0, 1 - (scrollProgress / 0.2));
   
   // Image transforms start after text fades (0.2 to 1)
-  const imageProgress = Math.max(0, Math.min(1, (scrollProgress - 0.2) / 0.8));
+  const imageProgress = isCompact ? 0 : Math.max(0, Math.min(1, (scrollProgress - 0.2) / 0.8));
   
   // Smooth interpolations
-  const centerWidth = 100 - (imageProgress * 58); // 100% to 42%
-  const centerHeight = 100 - (imageProgress * 30); // 100% to 70%
-  const sideWidth = imageProgress * 22; // 0% to 22%
-  const sideOpacity = imageProgress;
-  const sideTranslateLeft = -100 + (imageProgress * 100); // -100% to 0%
-  const sideTranslateRight = 100 - (imageProgress * 100); // 100% to 0%
-  const borderRadius = imageProgress * 24; // 0px to 24px
-  const gap = imageProgress * 16; // 0px to 16px
-  
-  // Vertical offset for side columns to move them up on mobile
-  const sideTranslateY = -(imageProgress * 15); // Move up by 15% when fully expanded
+  const centerWidth = isCompact ? 100 : 100 - (imageProgress * 58);
+  const centerHeight = isCompact ? 100 : 100 - (imageProgress * 30);
+  const sideWidth = isCompact ? 0 : imageProgress * 22;
+  const sideOpacity = isCompact ? 0 : imageProgress;
+  const sideTranslateLeft = isCompact ? 0 : -100 + (imageProgress * 100);
+  const sideTranslateRight = isCompact ? 0 : 100 - (imageProgress * 100);
+  const borderRadius = isCompact ? 0 : imageProgress * 24;
+  const gap = isCompact ? 0 : imageProgress * 16;
+  const sideTranslateY = isCompact ? 0 : -(imageProgress * 15);
 
   return (
-    <section ref={sectionRef} className="relative bg-background">
+    <section ref={sectionRef} className="relative w-full overflow-x-clip bg-background">
       {/* Sticky container for scroll animation */}
-      <div className="sticky top-0 h-screen overflow-hidden">
-        <div className="flex h-full w-full items-center justify-center">
+      <div className="sticky top-0 h-svh overflow-hidden">
+        <div className="flex h-full w-full min-w-0 items-center justify-center">
           {/* Bento Grid Container */}
           <div 
-            className="relative flex h-full w-full items-stretch justify-center"
-            style={{ gap: `${gap}px`, padding: `${imageProgress * 16}px`, paddingBottom: `${60 + (imageProgress * 40)}px` }}
+            className="relative flex h-full w-full min-w-0 max-w-full items-stretch justify-center overflow-hidden"
+            style={{
+              gap: `${gap}px`,
+              padding: isCompact ? "0" : `${imageProgress * 16}px`,
+              paddingBottom: isCompact ? "0" : `${60 + (imageProgress * 40)}px`,
+            }}
           >
             
             {/* Left Column */}
@@ -117,7 +130,7 @@ export function HeroSection() {
               ))}
             </div>
 
-            {/* Main Hero Image - Center */}
+            {/* Main Hero Video - Center */}
             <div 
               className="relative overflow-hidden will-change-transform"
               style={{
@@ -127,20 +140,21 @@ export function HeroSection() {
                 borderRadius: `${borderRadius}px`,
               }}
             >
-              <Image
-                src={`${ROLAND_GP9}/gp-9_hero.jpg`}
-                alt="Roland GP-9 Digital Grand Piano"
-                fill
-                className="object-cover"
+              <LazyVideo
+                src={GP9_VIDEOS.hero}
+                poster={`${ROLAND_GP9}/gp-9_hero.jpg`}
+                ariaLabel="Roland GP-9 Digital Grand Piano in a modern living space"
                 priority
+                className="absolute inset-0 h-full w-full object-cover"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10" />
               
               {/* Overlay Text - Fades out first */}
               <div 
                 className="absolute inset-0 flex items-end overflow-hidden"
                 style={{ opacity: textOpacity }}
               >
-                <h1 className="w-full text-[14vw] font-medium leading-[0.8] tracking-tighter text-white md:text-[12vw]">
+                <h1 className="w-full px-4 pb-6 text-[clamp(2.5rem,12vw,8rem)] font-medium leading-[0.85] tracking-tighter text-white sm:px-6">
                   {word.split("").map((letter, index) => (
                     <span
                       key={index}
@@ -193,11 +207,11 @@ export function HeroSection() {
       </div>
 
       {/* Scroll space to enable animation */}
-      <div className="h-[200vh]" />
+      <div className={isCompact ? "h-[80vh]" : "h-[140vh]"} />
 
       {/* Tagline Section */}
-      <div className="px-6 pt-32 pb-28 md:pt-48 md:px-12 md:pb-36 lg:px-20 lg:pt-56 lg:pb-44">
-        <p className="mx-auto max-w-2xl text-center text-2xl leading-relaxed text-muted-foreground md:text-3xl lg:text-[2.5rem] lg:leading-snug">
+      <div className="px-4 py-16 sm:px-6 md:px-10 md:py-20 lg:px-16 lg:py-24">
+        <p className="mx-auto max-w-2xl text-center text-xl leading-relaxed text-muted-foreground sm:text-2xl md:text-3xl lg:leading-snug">
           Authentic grand piano touch,
           <br />
           immersive sound at home.

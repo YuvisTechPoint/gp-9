@@ -45,7 +45,7 @@ export function PhilosophySection() {
   ];
 
   return (
-    <section id="products" className="relative bg-background">
+    <section id="products" className="relative w-full overflow-x-clip bg-background">
       <SectionHeading
         label="Models"
         title="Two finishes. One presence."
@@ -72,8 +72,8 @@ export function PhilosophySection() {
         ))}
       </div>
 
-      <div ref={sectionRef} className="relative" style={{ height: "200vh" }}>
-        <div className="sticky top-0 flex h-screen items-center justify-center grain-overlay">
+      <div ref={sectionRef} className="relative" style={{ height: "150vh" }}>
+        <div className="sticky top-0 flex h-svh items-center justify-center overflow-hidden grain-overlay">
           <div className="relative w-full">
             <div
               className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center"
@@ -122,7 +122,7 @@ export function PhilosophySection() {
         </div>
       </div>
 
-      <div className="px-6 py-20 md:px-12 md:py-28 lg:px-20 lg:py-36 lg:pb-14">
+      <div className="px-4 py-14 sm:px-6 md:px-10 md:py-20 lg:px-16 lg:py-24">
         <ScrollReveal variant="scale">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Grand design language</p>

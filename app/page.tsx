@@ -36,7 +36,7 @@ const productJsonLd = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="relative min-h-screen w-full max-w-full overflow-x-clip bg-background">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}

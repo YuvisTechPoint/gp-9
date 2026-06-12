@@ -1,9 +1,10 @@
 "use client";
 
+import { useRef } from "react";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
-import { LazyVideo } from "@/components/ui/lazy-video";
 import { Marquee } from "@/components/ui/marquee";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { ScrollScrubVideo } from "@/components/ui/scroll-scrub-video";
 import { GP9_VIDEOS, ROLAND_GP9 } from "@/lib/gp9-assets";
 
 const specs = [
@@ -22,6 +23,8 @@ const marqueeItems = [
 ];
 
 export function EditorialSection() {
+  const engageZoneRef = useRef<HTMLDivElement>(null);
+
   return (
     <section className="bg-background">
       <Marquee items={marqueeItems} />
@@ -42,23 +45,42 @@ export function EditorialSection() {
         ))}
       </div>
 
-      <ScrollReveal variant="scale">
-        <div className="relative aspect-[16/9] w-full overflow-hidden grain-overlay md:aspect-[21/9]">
-          <LazyVideo
-            src={GP9_VIDEOS.openLid}
-            poster={`${ROLAND_GP9}/gp-9_hero.jpg`}
-            ariaLabel="GP-9 grand piano lid opening"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-          <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12">
-            <p className="text-xs uppercase tracking-[0.35em] text-white/60">In motion</p>
-            <p className="mt-2 font-display text-2xl font-medium text-white md:text-3xl">
-              The lid rises. The room listens.
-            </p>
+      {/* Scroll-scrub zone — lid opens only as you scroll through */}
+      <div
+        ref={engageZoneRef}
+        id="in-motion"
+        data-scroll-engage
+        className="relative h-[180vh] w-full"
+        aria-label="GP-9 lid opening video"
+      >
+        <div className="sticky top-0 h-svh w-full overflow-hidden">
+          <div className="relative h-full w-full overflow-hidden grain-overlay">
+            <ScrollScrubVideo
+              src={GP9_VIDEOS.openLid}
+              poster={`${ROLAND_GP9}/gp-9_hero.jpg`}
+              zoneRef={engageZoneRef}
+              ariaLabel="GP-9 grand piano lid opening, controlled by scroll"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+            <div className="absolute bottom-8 left-8 md:bottom-12 md:left-12">
+              <p className="text-xs uppercase tracking-[0.35em] text-white/60">In motion</p>
+              <p className="mt-2 font-display text-2xl font-medium text-white md:text-3xl">
+                The lid rises. The room listens.
+              </p>
+            </div>
+            <div
+              className="pointer-events-none absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 transition-opacity duration-700"
+              style={{ opacity: "calc(var(--scroll-engage, 0) * 0.85)" }}
+            >
+              <span className="text-[10px] uppercase tracking-[0.35em] text-white/50">
+                Scroll to open
+              </span>
+              <span className="block h-8 w-px animate-pulse bg-white/40" />
+            </div>
           </div>
         </div>
-      </ScrollReveal>
+      </div>
     </section>
   );
 }

@@ -5,8 +5,8 @@ import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export function CtaSection() {
   return (
-    <section id="dealers" className="border-t border-border bg-foreground text-background">
-      <div className="px-6 py-24 md:px-12 md:py-32 lg:px-20">
+    <section id="dealers" className="w-full border-t border-border bg-foreground text-background">
+      <div className="px-4 py-16 sm:px-6 md:px-10 md:py-24 lg:px-16">
         <ScrollReveal variant="blur">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs uppercase tracking-[0.35em] text-background/50">Where to buy</p>

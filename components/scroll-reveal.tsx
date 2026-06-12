@@ -30,7 +30,7 @@ export function ScrollReveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
     );
 
     observer.observe(node);
@@ -41,10 +41,10 @@ export function ScrollReveal({
     <div
       ref={ref}
       className={cn(
-        "transition-all duration-700 ease-out",
-        !visible && variant === "up" && "translate-y-8 opacity-0",
-        !visible && variant === "scale" && "scale-95 opacity-0",
-        !visible && variant === "blur" && "opacity-0 blur-sm",
+        "transition-all duration-1000 ease-out",
+        !visible && variant === "up" && "translate-y-10 opacity-0",
+        !visible && variant === "scale" && "scale-[0.97] opacity-0",
+        !visible && variant === "blur" && "translate-y-6 opacity-0 blur-sm",
         visible && "translate-y-0 scale-100 opacity-100 blur-0",
         className
       )}

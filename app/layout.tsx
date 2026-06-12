@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import TargetCursor from '@/components/TargetCursor'
+import { SmoothScrollProvider } from '@/components/smooth-scroll-provider'
 import './globals.css'
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
@@ -38,13 +39,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased`}>
-        <TargetCursor
-          spinDuration={2}
-          hideDefaultCursor={true}
-          parallaxOn={true}
-          targetSelector="a, button, .cursor-target"
-        />
-        {children}
+        <SmoothScrollProvider>
+          <TargetCursor
+            spinDuration={2}
+            hideDefaultCursor={true}
+            parallaxOn={true}
+            targetSelector="a, button, .cursor-target"
+          />
+          {children}
+        </SmoothScrollProvider>
         <Analytics />
       </body>
     </html>

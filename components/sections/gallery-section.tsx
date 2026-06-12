@@ -76,7 +76,7 @@ export function GallerySection() {
   const activeIndex = Math.min(images.length, Math.ceil(scrollProgress * images.length) + 1);
 
   return (
-    <section id="gallery" className="relative bg-background">
+    <section id="gallery" className="relative w-full overflow-x-clip bg-background">
       <SectionHeading
         label="Gallery"
         title="Every angle, considered."

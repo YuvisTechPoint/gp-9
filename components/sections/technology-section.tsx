@@ -124,13 +124,13 @@ export function TechnologySection() {
   const gap = imageProgress * 16;
 
   return (
-    <section ref={sectionRef} className="relative bg-foreground">
-      <div className="sticky top-0 h-screen overflow-hidden">
+    <section ref={sectionRef} className="relative w-full overflow-x-clip bg-foreground">
+      <div className="sticky top-0 h-svh overflow-hidden">
         <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,rgba(0,0,0,0.35)_100%)]" />
 
-        <div className="flex h-full w-full items-center justify-center">
+        <div className="flex h-full w-full min-w-0 items-center justify-center">
           <div
-            className="relative flex h-full w-full items-stretch justify-center"
+            className="relative flex h-full w-full min-w-0 max-w-full items-stretch justify-center overflow-hidden"
             style={{ gap: `${gap}px`, padding: `${imageProgress * 16}px` }}
           >
             <div
@@ -233,11 +233,11 @@ export function TechnologySection() {
         </div>
       </div>
 
-      <div className="h-[200vh]" />
+      <div className="h-[140vh]" />
 
       <div
         ref={textSectionRef}
-        className="relative overflow-hidden bg-background px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40"
+        className="relative overflow-hidden bg-background px-4 py-16 sm:px-6 md:px-10 md:py-24 lg:px-16 lg:py-28"
       >
         <ScrollReveal className="relative z-10 mx-auto max-w-4xl">
           <ScrollRevealText text={descriptionText} />

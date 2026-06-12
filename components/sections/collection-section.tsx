@@ -62,7 +62,10 @@ export function CollectionSection() {
       />
 
       <div className="pb-24">
-        <div className="flex gap-6 overflow-x-auto px-6 pb-4 md:hidden snap-x snap-mandatory scrollbar-hide">
+        <div
+          className="flex gap-6 overflow-x-auto px-6 pb-4 md:hidden snap-x snap-mandatory scrollbar-hide"
+          data-lenis-prevent
+        >
           {highlights.map((item, index) => (
             <ScrollReveal key={item.id} delay={index * 60} variant="scale">
               <div className="group w-[75vw] flex-shrink-0 snap-center cursor-target">

@@ -4,9 +4,9 @@ import Image from "next/image";
 
 export function TestimonialsSection() {
   return (
-    <section id="about" className="bg-background">
+    <section id="about" className="w-full bg-background">
       {/* Large Text Statement */}
-      <div className="px-6 py-24 md:px-12 md:py-32 lg:px-20 lg:py-40">
+      <div className="px-4 py-16 sm:px-6 md:px-10 md:py-24 lg:px-16 lg:py-28">
         <p className="mx-auto max-w-5xl text-2xl leading-relaxed text-foreground md:text-3xl lg:text-[2.5rem] lg:leading-snug">
           The Roland GP-9 brings the presence of a concert grand into your living room — 
           refined design, responsive touch, and a sound that fills every corner of the space.
