@@ -1,0 +1,130 @@
+"use client";
+
+import Image from "next/image";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { TiltCard } from "@/components/ui/tilt-card";
+import { cn } from "@/lib/utils";
+import { FINISHES, type FinishKey } from "@/lib/gp9-assets";
+
+export function PhilosophySection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [ebonyTranslateX, setEbonyTranslateX] = useState(-100);
+  const [whiteTranslateX, setWhiteTranslateX] = useState(100);
+  const [titleOpacity, setTitleOpacity] = useState(1);
+  const [activeFinish, setActiveFinish] = useState<FinishKey>("ebony");
+  const rafRef = useRef<number | null>(null);
+
+  const updateTransforms = useCallback(() => {
+    if (!sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    const scrollableRange = sectionRef.current.offsetHeight - window.innerHeight;
+    const progress = Math.max(0, Math.min(1, -rect.top / scrollableRange));
+    setEbonyTranslateX((1 - progress) * -100);
+    setWhiteTranslateX((1 - progress) * 100);
+    setTitleOpacity(1 - progress);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(updateTransforms);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    updateTransforms();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [updateTransforms]);
+
+  const finishes: { key: FinishKey; translateX: number }[] = [
+    { key: "ebony", translateX: ebonyTranslateX },
+    { key: "white", translateX: whiteTranslateX },
+  ];
+
+  return (
+    <section id="products" className="relative bg-background">
+      <SectionHeading
+        label="Models"
+        title="Two finishes. One presence."
+        subtitle="Polished ebony and polished white — each crafted to anchor a room with concert-hall elegance."
+        className="pb-8 pt-8 md:pb-12"
+      />
+
+      <div className="mb-8 flex justify-center gap-3 px-6">
+        {(Object.keys(FINISHES) as FinishKey[]).map((key) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setActiveFinish(key)}
+            className={cn(
+              "cursor-target rounded-full border px-5 py-2 text-xs font-medium uppercase tracking-[0.25em] transition-all",
+              activeFinish === key
+                ? "border-foreground bg-foreground text-background"
+                : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
+            )}
+            data-cursor-target
+          >
+            {FINISHES[key].shortLabel}
+          </button>
+        ))}
+      </div>
+
+      <div ref={sectionRef} className="relative" style={{ height: "200vh" }}>
+        <div className="sticky top-0 flex h-screen items-center justify-center">
+          <div className="relative w-full">
+            <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center" style={{ opacity: titleOpacity }}>
+              <h2 className="px-6 text-center font-display text-[11vw] font-medium leading-[0.95] tracking-tighter text-foreground/10 md:text-[9vw] lg:text-[7vw]">
+                Ebony &amp; White
+              </h2>
+            </div>
+
+            <div className="relative z-10 grid grid-cols-1 gap-4 px-6 md:grid-cols-2 md:px-12 lg:px-20">
+              {finishes.map(({ key, translateX }) => (
+                <TiltCard key={key}>
+                  <div
+                    className={cn(
+                      "group relative aspect-[4/3] overflow-hidden rounded-2xl card-shine card-border-reveal cursor-target transition-all duration-500",
+                      activeFinish === key ? "ring-2 ring-foreground/20" : "opacity-80 md:opacity-100"
+                    )}
+                    data-cursor-target
+                    style={{ transform: `translate3d(${translateX}%, 0, 0)` }}
+                  >
+                    <Image
+                      src={FINISHES[key].picker}
+                      alt={`Roland GP-9 in ${FINISHES[key].label}`}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.3em] text-white/60">Finish</p>
+                        <p className="mt-1 text-xl font-medium text-white">{FINISHES[key].label}</p>
+                      </div>
+                      <span className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-medium text-white backdrop-blur-md">GP-9</span>
+                    </div>
+                  </div>
+                </TiltCard>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-6 py-20 md:px-12 md:py-28 lg:px-20 lg:pb-14">
+        <ScrollReveal variant="scale">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Grand design language</p>
+            <p className="mt-8 font-display text-2xl leading-relaxed text-muted-foreground md:text-3xl">
+              Sculpted lines, a high-gloss cabinet, and a lid that opens like a true concert grand —
+              the GP-9 transforms any room into a performance space.
+            </p>
+          </div>
+        </ScrollReveal>
+      </div>
+    </section>
+  );
+}
