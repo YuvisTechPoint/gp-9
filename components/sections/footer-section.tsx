@@ -54,9 +54,9 @@ function FooterLink({
 export function FooterSection() {
   return (
     <footer className="w-full bg-background">
-      <div className="border-t border-border px-4 py-12 sm:px-6 md:px-10 md:py-16 lg:px-16">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12">
-          <div className="sm:col-span-2 lg:col-span-1">
+      <div className="border-t border-border px-4 py-8 sm:px-6 sm:py-12 md:px-10 md:py-16 lg:px-16">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-5 gap-y-8 sm:gap-x-8 lg:grid-cols-4 lg:gap-x-12 lg:gap-y-12">
+          <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="text-lg font-medium text-foreground">
               Grand Piano
             </Link>
@@ -65,9 +65,9 @@ export function FooterSection() {
             </p>
           </div>
 
-          <div>
+          <div className="min-w-0 self-start">
             <h4 className="mb-3 text-sm font-medium text-foreground">Explore</h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2 sm:space-y-2.5">
               {footerLinks.explore.map((link) => (
                 <li key={link.label}>
                   <FooterLink href={link.href} label={link.label} />
@@ -76,31 +76,33 @@ export function FooterSection() {
             </ul>
           </div>
 
-          <div>
-            <h4 className="mb-3 text-sm font-medium text-foreground">About</h4>
-            <ul className="space-y-2.5">
-              {footerLinks.about.map((link) => (
-                <li key={link.label}>
-                  <FooterLink href={link.href} label={link.label} external={link.external} />
-                </li>
-              ))}
-            </ul>
-          </div>
+          <div className="flex min-w-0 flex-col gap-8 sm:gap-10 lg:contents">
+            <div className="min-w-0">
+              <h4 className="mb-3 text-sm font-medium text-foreground">About</h4>
+              <ul className="space-y-2 sm:space-y-2.5">
+                {footerLinks.about.map((link) => (
+                  <li key={link.label}>
+                    <FooterLink href={link.href} label={link.label} external={link.external} />
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          <div>
-            <h4 className="mb-3 text-sm font-medium text-foreground">Service</h4>
-            <ul className="space-y-2.5">
-              {footerLinks.service.map((link) => (
-                <li key={link.label}>
-                  <FooterLink href={link.href} label={link.label} external={link.external} />
-                </li>
-              ))}
-            </ul>
+            <div className="min-w-0">
+              <h4 className="mb-3 text-sm font-medium text-foreground">Service</h4>
+              <ul className="space-y-2 sm:space-y-2.5">
+                {footerLinks.service.map((link) => (
+                  <li key={link.label}>
+                    <FooterLink href={link.href} label={link.label} external={link.external} />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-border px-4 py-5 pb-24 sm:px-6 sm:pb-5 md:px-10 lg:px-16">
+      <div className="border-t border-border px-4 py-5 sm:px-6 md:px-10 lg:px-16">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-center text-xs text-muted-foreground sm:text-left">
             © {new Date().getFullYear()} Roland. All rights reserved.
