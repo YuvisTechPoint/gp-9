@@ -42,7 +42,7 @@ const models = [
 
 export function LineupSection() {
   return (
-    <section id="series" className="bg-background">
+    <section id="series" className="scroll-mt-24 bg-background">
       <SectionHeading
         label="GP Series"
         title="Other models in the series."

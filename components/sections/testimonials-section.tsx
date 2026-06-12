@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export function TestimonialsSection() {
   return (
-    <section id="about" className="w-full bg-background">
+    <section className="w-full bg-background">
       {/* Large Text Statement */}
       <div className="px-4 py-16 sm:px-6 md:px-10 md:py-24 lg:px-16 lg:py-28">
         <p className="mx-auto max-w-5xl text-2xl leading-relaxed text-foreground md:text-3xl lg:text-[2.5rem] lg:leading-snug">

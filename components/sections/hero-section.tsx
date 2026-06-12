@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { LazyVideo } from "@/components/ui/lazy-video";
 import { GP9_VIDEOS, ROLAND_GP9 } from "@/lib/gp9-assets";
+import { subscribeScroll } from "@/lib/scroll-performance";
 
 const word = "Grand Piano";
 
@@ -61,12 +62,8 @@ export function HeroSection() {
       setScrollProgress(progress);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-    
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return subscribeScroll(handleScroll);
   }, []);
 
   // Text fades out first (0 to 0.2)
@@ -154,7 +151,7 @@ export function HeroSection() {
                 className="absolute inset-0 flex items-end overflow-hidden pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-0"
                 style={{ opacity: textOpacity }}
               >
-                <h1 className="w-full bg-gradient-to-br from-zinc-400 via-white to-zinc-200 bg-clip-text px-4 pb-4 text-[clamp(2.25rem,11vw,8rem)] font-medium leading-[0.85] tracking-tighter text-transparent [filter:drop-shadow(0_2px_18px_rgba(0,0,0,0.45))] sm:px-6 sm:pb-6">
+                <h1 className="w-full px-4 pb-4 text-[clamp(2.25rem,11vw,8rem)] font-medium leading-[0.85] tracking-tighter text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] sm:px-6 sm:pb-6">
                   {word.split("").map((letter, index) => (
                     <span
                       key={index}
@@ -210,7 +207,7 @@ export function HeroSection() {
       <div className={isCompact ? "h-[80vh]" : "h-[140vh]"} />
 
       {/* Tagline Section */}
-      <div className="px-4 py-16 sm:px-6 md:px-10 md:py-20 lg:px-16 lg:py-24">
+      <div id="about" className="scroll-mt-24 px-4 py-16 sm:px-6 md:px-10 md:py-20 lg:px-16 lg:py-24">
         <p className="mx-auto max-w-2xl text-center text-xl leading-relaxed text-muted-foreground sm:text-2xl md:text-3xl lg:leading-snug">
           Authentic grand piano touch,
           <br />

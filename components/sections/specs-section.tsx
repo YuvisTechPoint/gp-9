@@ -59,7 +59,7 @@ const specGroups = [
 
 export function SpecsSection() {
   return (
-    <section id="specs" className="border-t border-border bg-background">
+    <section id="specs" className="scroll-mt-24 border-t border-border bg-background">
       <SectionHeading
         label="Specifications"
         title="Every detail, documented."

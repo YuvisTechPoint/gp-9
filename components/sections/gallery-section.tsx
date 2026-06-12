@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { FINISHES, ROLAND_GALLERY, type FinishKey } from "@/lib/gp9-assets";
+import { subscribeScroll } from "@/lib/scroll-performance";
 
 const GALLERY_SHOTS = [
   { name: "angle_open_gal.jpg", caption: "Lid open", alt: "GP-9 - lid open", shared: false },
@@ -65,10 +66,10 @@ export function GallerySection() {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(updateTransform);
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    updateTransform();
+    handleScroll();
+    const unsubscribe = subscribeScroll(handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      unsubscribe();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [updateTransform, images]);
@@ -76,7 +77,7 @@ export function GallerySection() {
   const activeIndex = Math.min(images.length, Math.ceil(scrollProgress * images.length) + 1);
 
   return (
-    <section id="gallery" className="relative w-full overflow-x-clip bg-background">
+    <section id="gallery" className="relative w-full scroll-mt-24 overflow-x-clip bg-background">
       <SectionHeading
         label="Gallery"
         title="Every angle, considered."

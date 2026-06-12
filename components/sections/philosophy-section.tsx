@@ -7,6 +7,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { cn } from "@/lib/utils";
 import { FINISHES, type FinishKey } from "@/lib/gp9-assets";
+import { subscribeScroll } from "@/lib/scroll-performance";
 
 export function PhilosophySection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -31,10 +32,10 @@ export function PhilosophySection() {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = requestAnimationFrame(updateTransforms);
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    updateTransforms();
+    handleScroll();
+    const unsubscribe = subscribeScroll(handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      unsubscribe();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [updateTransforms]);
@@ -45,7 +46,7 @@ export function PhilosophySection() {
   ];
 
   return (
-    <section id="products" className="relative w-full overflow-x-clip bg-background">
+    <section id="products" className="relative w-full scroll-mt-24 overflow-x-clip bg-background">
       <SectionHeading
         label="Models"
         title="Two finishes. One presence."

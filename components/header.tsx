@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { NavArrowIcon } from "@/components/ui/nav-arrow-icon";
 import { cn } from "@/lib/utils";
+import { subscribeScroll } from "@/lib/scroll-performance";
 
 const navLinks = [
   { href: "#about", label: "About" },
@@ -24,8 +25,8 @@ export function Header() {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    handleScroll();
+    return subscribeScroll(handleScroll);
   }, []);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export function Header() {
         "fixed top-2 left-1/2 z-50 w-[calc(100%-2.4rem)] -translate-x-1/2 transition-all duration-300 sm:top-3 sm:w-[calc(100%-2rem)] sm:max-w-6xl lg:top-4",
         isScrolled || isMenuOpen
           ? "rounded-full bg-background/85 shadow-sm backdrop-blur-md"
-          : "bg-transparent max-lg:rounded-full max-lg:bg-background/85 max-lg:shadow-sm max-lg:backdrop-blur-md",
+          : "bg-transparent max-lg:rounded-full max-lg:bg-background/85 max-lg:shadow-sm max-lg:backdrop-blur-md max-lg:[box-shadow:rgba(14,63,126,0.04)_0px_0px_0px_1px,rgba(42,51,69,0.04)_0px_1px_1px_-0.5px]",
         isMenuOpen && "rounded-xl bg-background/95 backdrop-blur-md sm:rounded-2xl lg:rounded-3xl"
       )}
       style={{
@@ -61,7 +62,7 @@ export function Header() {
     >
       <div className="flex items-center justify-between gap-2 px-4 py-1 sm:gap-3 sm:px-4 sm:py-2 lg:px-5 lg:py-2.5">
         <Link
-          href="#"
+          href="/"
           className={cn(
             "shrink-0 text-xs font-medium tracking-tight transition-colors duration-300 sm:text-sm lg:text-lg",
             isScrolled || isMenuOpen

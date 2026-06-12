@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback, useMemo, useState } from 'react';
 import { gsap } from 'gsap';
-import { isCoarsePointer } from '@/lib/scroll-performance';
+import { isCoarsePointer, subscribeScroll } from '@/lib/scroll-performance';
 import './TargetCursor.css';
 
 const getContainingBlock = element => {
@@ -175,7 +175,7 @@ const TargetCursor = ({
         }
       }
     };
-    window.addEventListener('scroll', scrollHandler, { passive: true });
+    const unsubscribeScroll = subscribeScroll(scrollHandler);
 
     const mouseDownHandler = () => {
       if (!dotRef.current) return;
@@ -326,7 +326,7 @@ const TargetCursor = ({
 
       window.removeEventListener('mousemove', moveHandler);
       window.removeEventListener('mouseover', enterHandler);
-      window.removeEventListener('scroll', scrollHandler);
+      unsubscribeScroll();
       window.removeEventListener('resize', resizeHandler);
       window.removeEventListener('mousedown', mouseDownHandler);
       window.removeEventListener('mouseup', mouseUpHandler);

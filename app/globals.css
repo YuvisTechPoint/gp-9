@@ -127,6 +127,15 @@
   html {
     scroll-behavior: smooth;
   }
+
+  html.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  section[id],
+  main [id] {
+    scroll-margin-top: 5.5rem;
+  }
 }
 
 @keyframes slideUp {

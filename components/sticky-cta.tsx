@@ -4,6 +4,7 @@ import Link from "next/link";
 import { NavArrowIcon } from "@/components/ui/nav-arrow-icon";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { subscribeScroll } from "@/lib/scroll-performance";
 
 export function StickyCta() {
   const [visible, setVisible] = useState(false);
@@ -13,9 +14,8 @@ export function StickyCta() {
       setVisible(window.scrollY > window.innerHeight * 0.6);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return subscribeScroll(handleScroll);
   }, []);
 
   return (

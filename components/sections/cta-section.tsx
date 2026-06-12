@@ -6,7 +6,7 @@ import { NavArrowIcon } from "@/components/ui/nav-arrow-icon";
 
 export function CtaSection() {
   return (
-    <section id="dealers" className="w-full border-t border-border bg-foreground text-background">
+    <section id="dealers" className="w-full scroll-mt-24 border-t border-border bg-foreground text-background">
       <div className="px-4 py-16 sm:px-6 md:px-10 md:py-24 lg:px-16">
         <ScrollReveal variant="blur">
           <div className="mx-auto max-w-3xl text-center">

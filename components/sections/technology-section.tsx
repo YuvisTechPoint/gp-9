@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { subscribeScroll } from "@/lib/scroll-performance";
 
 function ScrollRevealText({ text }: { text: string }) {
   const containerRef = useRef<HTMLParagraphElement>(null);
@@ -22,10 +23,8 @@ function ScrollRevealText({ text }: { text: string }) {
       setProgress(newProgress);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll);
+    return subscribeScroll(handleScroll);
   }, []);
 
   const words = text.split(" ");
@@ -105,10 +104,8 @@ export function TechnologySection() {
       setScrollProgress(progress);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll);
+    return subscribeScroll(handleScroll);
   }, []);
 
   const titleOpacity = Math.max(0, 1 - scrollProgress / 0.2);

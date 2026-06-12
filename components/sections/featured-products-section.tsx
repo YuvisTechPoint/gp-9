@@ -41,7 +41,7 @@ const features = [
 
 export function FeaturedProductsSection() {
   return (
-    <section id="technology" className="relative overflow-hidden bg-background">
+    <section id="technology" className="relative scroll-mt-24 overflow-hidden bg-background">
       <div className="pointer-events-none absolute -right-20 top-20 h-64 w-64 rounded-full bg-secondary blur-3xl animate-float-slow" />
       <div className="pointer-events-none absolute -left-20 bottom-20 h-48 w-48 rounded-full bg-muted blur-3xl animate-float-slow [animation-delay:2s]" />
 
