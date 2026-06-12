@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { NavArrowIcon } from "@/components/ui/nav-arrow-icon";
+import { cn } from "@/lib/utils";
 
 const footerLinks = {
   explore: [
@@ -38,9 +40,13 @@ function FooterLink({
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      className="footer-link-hover text-sm text-muted-foreground transition-colors hover:text-foreground"
+      className={cn(
+        "footer-link-hover group flex items-center justify-between gap-3 text-sm text-muted-foreground transition-colors hover:text-foreground",
+        external && "pr-1"
+      )}
     >
-      {label}
+      <span>{label}</span>
+      <NavArrowIcon size="sm" />
     </Link>
   );
 }
@@ -94,7 +100,7 @@ export function FooterSection() {
         </div>
       </div>
 
-      <div className="border-t border-border px-4 py-5 sm:px-6 md:px-10 lg:px-16">
+      <div className="border-t border-border px-4 py-5 pb-24 sm:px-6 sm:pb-5 md:px-10 lg:px-16">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="text-center text-xs text-muted-foreground sm:text-left">
             © {new Date().getFullYear()} Roland. All rights reserved.
@@ -105,25 +111,28 @@ export function FooterSection() {
               href="https://www.instagram.com/rolandglobal/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+              className="group inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
-              Instagram
+              <span>Instagram</span>
+              <NavArrowIcon size="sm" className="h-6 w-6" />
             </Link>
             <Link
               href="https://www.youtube.com/user/RolandChannel"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+              className="group inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
-              YouTube
+              <span>YouTube</span>
+              <NavArrowIcon size="sm" className="h-6 w-6" />
             </Link>
             <Link
               href="https://www.roland.com/global/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+              className="group inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
             >
-              Roland
+              <span>Roland</span>
+              <NavArrowIcon size="sm" className="h-6 w-6" />
             </Link>
           </div>
         </div>

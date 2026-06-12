@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { NavArrowIcon } from "@/components/ui/nav-arrow-icon";
 
 export function CtaSection() {
   return (
@@ -22,19 +23,24 @@ export function CtaSection() {
                 href="https://www.roland.com/global/dealers/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cursor-target rounded-full bg-background px-8 py-3.5 text-sm font-medium text-foreground transition-opacity hover:opacity-90"
+                className="group inline-flex cursor-target items-center gap-2.5 rounded-full bg-background px-8 py-3.5 text-sm font-medium text-foreground transition-opacity hover:opacity-90"
                 data-cursor-target
               >
-                Find a dealer
+                <span>Find a dealer</span>
+                <NavArrowIcon size="sm" />
               </Link>
               <Link
                 href="https://www.roland.com/global/products/gp-9/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="cursor-target rounded-full border border-background/30 px-8 py-3.5 text-sm font-medium text-background transition-colors hover:bg-background/10"
+                className="group inline-flex cursor-target items-center gap-2.5 rounded-full border border-background/30 px-8 py-3.5 text-sm font-medium text-background transition-colors hover:bg-background/10"
                 data-cursor-target
               >
-                Official product page
+                <span>Official product page</span>
+                <NavArrowIcon
+                  size="sm"
+                  className="border-background/30 bg-background/10 text-background group-hover:bg-background group-hover:text-foreground"
+                />
               </Link>
             </div>
           </div>

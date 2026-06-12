@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { NavArrowIcon } from "@/components/ui/nav-arrow-icon";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -36,7 +37,7 @@ export function Header() {
 
   const linkClass = (scrolled: boolean) =>
     cn(
-      "nav-link-underline whitespace-nowrap text-xs transition-colors lg:text-sm",
+      "group inline-flex items-center gap-1.5 whitespace-nowrap text-xs transition-colors lg:text-sm",
       scrolled
         ? "text-muted-foreground hover:text-foreground"
         : "text-white/70 hover:text-white"
@@ -45,24 +46,30 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-3 left-1/2 z-50 w-[calc(100%-1.5rem)] max-w-6xl -translate-x-1/2 transition-all duration-300 sm:top-4 sm:w-[calc(100%-2rem)]",
-        isScrolled
+        "fixed top-2 left-1/2 z-50 -translate-x-1/2 transition-all duration-300 sm:top-3 lg:top-4",
+        isMenuOpen
+          ? "w-[calc(100%-2.75rem)] max-w-md sm:w-[calc(100%-2rem)] sm:max-w-6xl"
+          : "w-fit max-w-[calc(100%-2.75rem)] sm:w-[calc(100%-2rem)] sm:max-w-6xl",
+        isScrolled || isMenuOpen
           ? "rounded-full bg-background/85 shadow-sm backdrop-blur-md"
-          : "bg-transparent",
-        isMenuOpen && "rounded-2xl bg-background/95 backdrop-blur-md sm:rounded-3xl"
+          : "bg-transparent max-lg:rounded-full max-lg:bg-background/85 max-lg:shadow-sm max-lg:backdrop-blur-md",
+        isMenuOpen && "rounded-xl bg-background/95 backdrop-blur-md sm:rounded-2xl lg:rounded-3xl"
       )}
       style={{
-        boxShadow: isScrolled
-          ? "rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px"
-          : "none",
+        boxShadow:
+          isScrolled || isMenuOpen
+            ? "rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px"
+            : undefined,
       }}
     >
-      <div className="flex items-center justify-between gap-3 px-3 py-2 sm:px-4 sm:py-2.5 lg:px-5">
+      <div className="flex items-center justify-between gap-2 px-2.5 py-1 sm:gap-3 sm:px-4 sm:py-2 lg:px-5 lg:py-2.5">
         <Link
           href="#"
           className={cn(
-            "shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 sm:text-base lg:text-lg",
-            isScrolled || isMenuOpen ? "text-foreground" : "text-white"
+            "shrink-0 text-xs font-medium tracking-tight transition-colors duration-300 sm:text-sm lg:text-lg",
+            isScrolled || isMenuOpen
+              ? "text-foreground"
+              : "text-foreground lg:text-white"
           )}
         >
           Grand Piano
@@ -71,7 +78,14 @@ export function Header() {
         <nav className="hidden min-w-0 flex-1 items-center justify-center gap-4 xl:gap-8 lg:flex">
           {navLinks.map((link) => (
             <Link key={link.href} href={link.href} className={linkClass(isScrolled)}>
-              {link.label}
+              <span>{link.label}</span>
+              <ArrowUpRight
+                aria-hidden
+                className={cn(
+                  "h-3 w-3 shrink-0 opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100",
+                  isScrolled ? "text-foreground" : "text-white"
+                )}
+              />
             </Link>
           ))}
         </nav>
@@ -80,13 +94,17 @@ export function Header() {
           <Link
             href="#dealers"
             className={cn(
-              "inline-flex rounded-full px-4 py-2 text-xs font-medium transition-all lg:text-sm",
+              "group inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition-all lg:text-sm",
               isScrolled
                 ? "bg-foreground text-background hover:opacity-80"
                 : "bg-white text-foreground hover:bg-white/90"
             )}
           >
-            Where to Buy
+            <span>Where to Buy</span>
+            <ArrowUpRight
+              aria-hidden
+              className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
           </Link>
         </div>
 
@@ -94,35 +112,37 @@ export function Header() {
           type="button"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className={cn(
-            "shrink-0 transition-colors lg:hidden",
-            isScrolled || isMenuOpen ? "text-foreground" : "text-white"
+            "flex h-7 w-7 shrink-0 items-center justify-center transition-colors lg:hidden",
+            isScrolled || isMenuOpen ? "text-foreground" : "text-foreground lg:text-white"
           )}
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >
-          {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
         </button>
       </div>
 
       {isMenuOpen && (
-        <div className="border-t border-border px-4 pb-6 pt-4 lg:hidden">
-          <nav className="flex flex-col gap-1">
+        <div className="border-t border-border px-2.5 pb-4 pt-2.5 sm:px-4 sm:pb-6 sm:pt-4 lg:hidden">
+          <nav className="flex flex-col gap-0.5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-lg px-3 py-2.5 text-base text-foreground transition-colors hover:bg-muted"
+                className="group flex items-center justify-between rounded-lg px-2 py-2 text-sm text-foreground transition-colors hover:bg-muted sm:px-3 sm:py-2.5 sm:text-base"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {link.label}
+                <span>{link.label}</span>
+                <NavArrowIcon size="sm" />
               </Link>
             ))}
             <Link
               href="#dealers"
-              className="mt-3 rounded-full bg-foreground px-5 py-3 text-center text-sm font-medium text-background"
+              className="group mt-2 flex items-center justify-between rounded-full bg-foreground px-4 py-2 text-xs font-medium text-background sm:mt-3 sm:px-5 sm:py-2.5 sm:text-sm"
               onClick={() => setIsMenuOpen(false)}
             >
-              Where to Buy
+              <span>Where to Buy</span>
+              <NavArrowIcon className="border-white/20 bg-white/10 text-background group-hover:bg-background group-hover:text-foreground" />
             </Link>
           </nav>
         </div>

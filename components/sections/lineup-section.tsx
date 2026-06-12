@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { NavArrowIcon } from "@/components/ui/nav-arrow-icon";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { TiltCard } from "@/components/ui/tilt-card";
@@ -66,6 +67,12 @@ export function LineupSection() {
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                  <div className="absolute right-4 top-4">
+                    <NavArrowIcon
+                      size="sm"
+                      className="border-white/20 bg-white/10 text-white group-hover:bg-white group-hover:text-foreground"
+                    />
+                  </div>
                   {model.featured && (
                     <span className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-foreground">
                       Current

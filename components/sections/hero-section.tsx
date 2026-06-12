@@ -151,10 +151,10 @@ export function HeroSection() {
               
               {/* Overlay Text - Fades out first */}
               <div 
-                className="absolute inset-0 flex items-end overflow-hidden"
+                className="absolute inset-0 flex items-end overflow-hidden pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-0"
                 style={{ opacity: textOpacity }}
               >
-                <h1 className="w-full px-4 pb-6 text-[clamp(2.5rem,12vw,8rem)] font-medium leading-[0.85] tracking-tighter text-white sm:px-6">
+                <h1 className="w-full px-4 pb-4 text-[clamp(2.25rem,11vw,8rem)] font-medium leading-[0.85] tracking-tighter text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] sm:px-6 sm:pb-6">
                   {word.split("").map((letter, index) => (
                     <span
                       key={index}

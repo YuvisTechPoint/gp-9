@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { MobileFixedFooter } from "@/components/mobile-fixed-footer";
 import { StickyCta } from "@/components/sticky-cta";
 import { HeroSection } from "@/components/sections/hero-section";
 import { PhilosophySection } from "@/components/sections/philosophy-section";
@@ -36,7 +37,7 @@ const productJsonLd = {
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen w-full max-w-full overflow-x-clip bg-background">
+    <main className="relative min-h-screen w-full max-w-full overflow-x-clip bg-background pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-0">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
@@ -57,6 +58,7 @@ export default function Home() {
       <TestimonialsSection />
       <CtaSection />
       <FooterSection />
+      <MobileFixedFooter />
     </main>
   );
 }

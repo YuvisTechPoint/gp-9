@@ -5,43 +5,21 @@ import Lenis from "lenis";
 import { getEngagedScrollBlend, getScrollEngageFactor } from "@/lib/scroll-engage";
 import { isCoarsePointer, prefersReducedMotion } from "@/lib/scroll-performance";
 
-function getScrollConfig() {
-  const mobile = isCoarsePointer();
-
-  if (mobile) {
-    return {
-      lerp: 0.1,
-      wheelMultiplier: 0.7,
-      touchMultiplier: 1.15,
-      syncTouch: false,
-      syncTouchLerp: 0.12,
-      maxWheelDelta: 85,
-      engageMaxWheelDelta: 48,
-      engageWheelRatio: 0.78,
-      engageMinBlend: 0.55,
-      anchorOffset: -72,
-      anchorDuration: 1.6,
-      keyboardStep: 0.38,
-      engageKeyboardStep: 0.22,
-    };
-  }
-
-  return {
-    lerp: 0.072,
-    wheelMultiplier: 0.58,
-    touchMultiplier: 0.88,
-    syncTouch: true,
-    syncTouchLerp: 0.09,
-    maxWheelDelta: 72,
-    engageMaxWheelDelta: 38,
-    engageWheelRatio: 0.62,
-    engageMinBlend: 0.34,
-    anchorOffset: -88,
-    anchorDuration: 2,
-    keyboardStep: 0.34,
-    engageKeyboardStep: 0.16,
-  };
-}
+const DESKTOP_SCROLL = {
+  lerp: 0.072,
+  wheelMultiplier: 0.58,
+  touchMultiplier: 0.88,
+  syncTouch: true,
+  syncTouchLerp: 0.09,
+  maxWheelDelta: 72,
+  engageMaxWheelDelta: 38,
+  engageWheelRatio: 0.62,
+  engageMinBlend: 0.34,
+  anchorOffset: -88,
+  anchorDuration: 2,
+  keyboardStep: 0.34,
+  engageKeyboardStep: 0.16,
+};
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
@@ -75,15 +53,28 @@ function isEditableTarget(target: EventTarget | null) {
   );
 }
 
+function syncScrollEngage() {
+  const factor = getScrollEngageFactor();
+  document.documentElement.style.setProperty("--scroll-engage", factor.toFixed(3));
+  window.dispatchEvent(new Event("app:scroll"));
+}
+
 export function SmoothScrollProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion() || isCoarsePointer()) {
+      const onNativeScroll = () => syncScrollEngage();
+      window.addEventListener("scroll", onNativeScroll, { passive: true });
+      syncScrollEngage();
+      return () => {
+        window.removeEventListener("scroll", onNativeScroll);
+        document.documentElement.style.removeProperty("--scroll-engage");
+      };
+    }
 
     const html = document.documentElement;
     html.classList.add("lenis", "lenis-smooth");
 
-    const SCROLL = getScrollConfig();
-
+    const SCROLL = DESKTOP_SCROLL;
     let engageFactor = 0;
 
     const lenis = new Lenis({
@@ -115,14 +106,7 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
       },
     });
 
-    lenis.on("scroll", () => {
-      engageFactor = getScrollEngageFactor();
-      document.documentElement.style.setProperty(
-        "--scroll-engage",
-        engageFactor.toFixed(3)
-      );
-      window.dispatchEvent(new Event("app:scroll"));
-    });
+    lenis.on("scroll", syncScrollEngage);
 
     const syncLenisState = () => {
       if (document.body.style.overflow === "hidden") {
