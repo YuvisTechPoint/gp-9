@@ -46,10 +46,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-2 left-1/2 z-50 -translate-x-1/2 transition-all duration-300 sm:top-3 lg:top-4",
-        isMenuOpen
-          ? "w-[calc(100%-2.75rem)] max-w-md sm:w-[calc(100%-2rem)] sm:max-w-6xl"
-          : "w-fit max-w-[calc(100%-2.75rem)] sm:w-[calc(100%-2rem)] sm:max-w-6xl",
+        "fixed top-2 left-1/2 z-50 w-[calc(100%-2.4rem)] -translate-x-1/2 transition-all duration-300 sm:top-3 sm:w-[calc(100%-2rem)] sm:max-w-6xl lg:top-4",
         isScrolled || isMenuOpen
           ? "rounded-full bg-background/85 shadow-sm backdrop-blur-md"
           : "bg-transparent max-lg:rounded-full max-lg:bg-background/85 max-lg:shadow-sm max-lg:backdrop-blur-md",
@@ -62,7 +59,7 @@ export function Header() {
             : undefined,
       }}
     >
-      <div className="flex items-center justify-between gap-2 px-2.5 py-1 sm:gap-3 sm:px-4 sm:py-2 lg:px-5 lg:py-2.5">
+      <div className="flex items-center justify-between gap-2 px-4 py-1 sm:gap-3 sm:px-4 sm:py-2 lg:px-5 lg:py-2.5">
         <Link
           href="#"
           className={cn(
